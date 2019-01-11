@@ -32,7 +32,21 @@ exp_dict = dict(
 
 
 def get_info(start_date, end_date, ltp_path='/data/eeg/scalp/ltp/'):
+    """
+    Loads information about all sessions (from the cmldb_sess_info_<exp>.txt files) and subjects (from the
+    cmldb_subj_info_<exp>.txt files). Then, selects only the sessions which occurred in the specified date range.
+    Finally, adds subject information to each session and returns it as a data frame.
 
+    Information handled by this function includes the subject, date, time, experiment, session number, hours of sleep,
+    alertness, and gender associated with each session.
+
+    To be added: handedness information.
+
+    :param start_date: A datetime date object indicating earliest date to include sessions from (inclusive).
+    :param end_date: A datetime date object indicating latest date to include sessions from (inclusive).
+    :param ltp_path: The path the the standard LTP directory on Rhino (/data/eeg/scalp/ltp/).
+    :return: A data frame containing one row for each session.
+    """
     # Load subject and session info
     sess_info = get_sess_info(start_date, end_date, ltp_path)
     subj_info = get_subj_info(ltp_path)
@@ -60,7 +74,15 @@ def get_info(start_date, end_date, ltp_path='/data/eeg/scalp/ltp/'):
 
 
 def get_sess_info(start_date, end_date, ltp_path='/data/eeg/scalp/ltp/'):
+    """
+    Loads information about all sessions from the cmldb_sess_info_<exp>.txt files present in each experiment's LTP
+    directory. Only returns data from sessions that took place in the specified date range.
 
+    :param start_date: A datetime date object indicating earliest date to include sessions from (inclusive).
+    :param end_date: A datetime date object indicating latest date to include sessions from (inclusive).
+    :param ltp_path: The path the the standard LTP directory on Rhino (/data/eeg/scalp/ltp/).
+    :return: A dictionary mapping experiment names to data frames containing one row for each session.
+    """
     # Find the cmldb_sess_info file for each experiment
     info_files = glob(os.path.join(ltp_path, '*/cmldb_sess_info_*.txt'))
 
@@ -84,7 +106,13 @@ def get_sess_info(start_date, end_date, ltp_path='/data/eeg/scalp/ltp/'):
 
 
 def get_subj_info(ltp_path='/data/eeg/scalp/ltp/'):
+    """
+    Loads information about all subjects from the cmldb_sess_info_<exp>.txt files present in each experiment's LTP
+    directory.
 
+    :param ltp_path: The path the the standard LTP directory on Rhino (/data/eeg/scalp/ltp/).
+    :return: A dictionary mapping subject IDs to dictionaries of subject information.
+    """
     # Find the cmldb_subj_info file for each experiment
     info_files = glob(os.path.join(ltp_path, '*/cmldb_subj_info_*.txt'))
 
