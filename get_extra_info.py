@@ -8,7 +8,7 @@ def get_extra_info(info, extra_info_path):
     data = {}
     with open(extra_info_path, 'r') as f:
         text = f.readlines()
-        text = [line.rstrip().split('\t') for line in text]
+        text = [line.replace('\n', '').split('\t') for line in text]
     # Create dictionary mapping participant ID to date of birth, head circumference, and cap size
     for line in text:
         dob = line[1].split('/')
@@ -17,19 +17,22 @@ def get_extra_info(info, extra_info_path):
             month=int(dob[0]),
             day=int(dob[1]),
             head_circum=float(line[2]),
-            cap_size=line[3]
+            cap_size=line[3],
+            guid=line[4]
         )
 
     # Add extra info to data frame
     info['head_circum'] = pd.Series(None, index=info.index)
     info['cap_size'] = pd.Series(None, index=info.index)
     info['age_in_months'] = pd.Series(None, index=info.index)
+    info['subjectkey'] = pd.Series(None, index=info.index)
     for i, sess_data in info.iterrows():
         subj = sess_data.subject
         d = data[subj]
+        info.loc[i, 'age_in_months'] = calculate_age_in_months(sess_data, d['year'], d['month'], d['day'])
         info.loc[i, 'head_circum'] = data[subj]['head_circum']
         info.loc[i, 'cap_size'] = data[subj]['cap_size']
-        info.loc[i, 'age_in_months'] = calculate_age_in_months(sess_data, d['year'], d['month'], d['day'])
+        info.loc[i, 'subjectkey'] = data[subj]['guid']
 
     return info
 

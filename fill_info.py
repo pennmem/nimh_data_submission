@@ -13,7 +13,7 @@ def fill_info(ed, esf, info):
 def fill_eeg_details(ed, info):
 
     ed = ed.append(pd.DataFrame(None, index=info.index))
-    ed.loc[:, 'subjectkey'] = np.nan  # Subject GUID
+    ed.loc[:, 'subjectkey'] = info.subjectkey  # Subject GUID
     ed.loc[:, 'src_subject_id'] = info.subject  # Subject ID
     ed.loc[:, 'interview_date'] = np.nan  # Session date (MM/DD/YYYY)
     ed.loc[:, 'interview_age'] = info.age_in_months  # Participant's age in months
@@ -42,7 +42,7 @@ def fill_eeg_details(ed, info):
 def fill_eeg_sub_files(esf, info):
 
     esf = esf.append(pd.DataFrame(None, index=info.index))
-    esf.loc[:, 'subjectkey'] = np.nan  # Subject GUID
+    esf.loc[:, 'subjectkey'] = info.subjectkey  # Subject GUID
     esf.loc[:, 'src_subject_id'] = info.subject  # Subject ID
     esf.loc[:, 'interview_date'] = np.nan  # Session date (MM/DD/YYYY)
     esf.loc[:, 'interview_age'] = info.age_in_months  # Participant's age in months
