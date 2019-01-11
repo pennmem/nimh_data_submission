@@ -27,8 +27,8 @@ def fill_eeg_details(ed, info):
     ed.loc[:, 'eeg008c'] = np.nan  # Hours of sleep
     ed.loc[:, 'eeg008d'] = np.nan  # Alertness (1-5)
     ed.loc[:, 'eeg013'] = np.nan  # Start time of EEG recording
-    ed.loc[:, 'head_circum'] = np.nan  # Participant's head circumference (in cm)
-    ed.loc[:, 'eeg015'] = np.nan  # Size of cap used (PM, PL, AS, AM, AML, AL, AXL)
+    ed.loc[:, 'head_circum'] = info.head_circum  # Participant's head circumference (in cm)
+    ed.loc[:, 'eeg015'] = info.cap_size  # Size of cap used (PM, PL, AS, AM, AML, AL, AXL)
     ed.loc[:, 'eeg022'] = np.nan  # End time of EEG recording
     ed.loc[:, 'eeg026'] = 0  # 1 if task included faces, 0 if not
     ed.loc[:, 'eeg027'] = 0  # 1 if task involved resting with eyes closed, 0 if not
@@ -47,17 +47,17 @@ def fill_eeg_sub_files(esf, info):
     esf.loc[:, 'interview_date'] = np.nan  # Session date (MM/DD/YYYY)
     esf.loc[:, 'interview_age'] = info.age_in_months  # Participant's age in months
     esf.loc[:, 'gender'] = info.gender  # Participant's gender
-    esf.loc[:, 'ofc'] = np.nan  # Participant's head circumference (in cm)
-    esf.loc[:, 'experiment_id'] = np.nan  # Experiment's ID number
-    esf.loc[:, 'data_file1'] = np.nan  # Data file 1 (typically EEG recording)
-    esf.loc[:, 'data_file1_type'] = np.nan  # File type of file 1 (typically "EEG")
-    esf.loc[:, 'data_file2'] = np.nan  # Data file 2 (typically events file)
-    esf.loc[:, 'data_file2_type'] = np.nan  # File type of file 2 (typically "Behavioral")
-    esf.loc[:, 'data_file3'] = np.nan  # Data file 3 (extra file, e.g. a sync pulse log or second EEG recording)
-    esf.loc[:, 'data_file3_type'] = np.nan  # File type of file 3
-    esf.loc[:, 'data_file4'] = np.nan  # Data file 4 (extra file, e.g. a sync pulse log or second EEG recording)
-    esf.loc[:, 'data_file4_type'] = np.nan  # File type of file 4
-    esf.loc[:, 'head_circum'] = np.nan  # Participant's head circumference (in cm)
+    esf.loc[:, 'ofc'] = info.head_circum  # Participant's head circumference (in cm)
+    esf.loc[:, 'experiment_id'] = info.experiment_id  # Experiment's ID number
+    esf.loc[:, 'data_file1'] = info.data_file1  # Data file 1 (typically EEG recording)
+    esf.loc[:, 'data_file1_type'] = info.data_file1_type  # File type of file 1 (typically "EEG")
+    esf.loc[:, 'data_file2'] = info.data_file2  # Data file 2 (typically events file or session log)
+    esf.loc[:, 'data_file2_type'] = info.data_file2_type  # File type of file 2 (typically "Behavioral")
+    esf.loc[:, 'data_file3'] = info.data_file3  # Data file 3 (extra file, e.g. sync pulse log or second EEG recording)
+    esf.loc[:, 'data_file3_type'] = info.data_file3_type  # File type of file 3
+    esf.loc[:, 'data_file4'] = info.data_file4  # Data file 4 (extra file, e.g. sync pulse log or second EEG recording)
+    esf.loc[:, 'data_file4_type'] = info.data_file4_type  # File type of file 4
+    esf.loc[:, 'head_circum'] = info.head_circum  # Participant's head circumference (in cm)
     esf.loc[:, 'visit'] = info.session  # Session number
 
     return esf
