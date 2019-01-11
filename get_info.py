@@ -37,19 +37,16 @@ def get_info(start_date, end_date, ltp_path='/data/eeg/scalp/ltp/'):
     sess_info = get_sess_info(start_date, end_date, ltp_path)
     subj_info = get_subj_info(ltp_path)
 
-    # Add experiment name and subject info into session info
     for exp in sess_info:
+        # Add experiment name and ID to session info
         exp_id = exp_dict[exp]
         sess_info[exp]['experiment'] = pd.Series([exp for _ in range(len(sess_info[exp]))], index=sess_info[exp].index)
         sess_info[exp]['experiment_id'] = pd.Series([exp_id for _ in range(len(sess_info[exp]))], index=sess_info[exp].index)
-        sess_info[exp]['birth_year'] = pd.Series(None, index=sess_info[exp].index)
+        # Add subject gender to session info
         sess_info[exp]['gender'] = pd.Series(None, index=sess_info[exp].index)
-        sess_info[exp]['age_in_months'] = pd.Series(None, index=sess_info[exp].index)
         for i, sess_data in sess_info[exp].iterrows():
             subj = subj_info[sess_data.subject]
-            sess_info[exp].loc[i, 'birth_year'] = subj['birth']
             sess_info[exp].loc[i, 'gender'] = subj['gender']
-            sess_info[exp].loc[i, 'age_in_months'] = calculate_age_in_months(sess_data, subj['birth'])
 
     # Merge session info from all experiments into a single frame
     info = None
@@ -74,6 +71,7 @@ def get_sess_info(start_date, end_date, ltp_path='/data/eeg/scalp/ltp/'):
         mask = np.zeros(len(info), dtype=bool)
         # Check whether each session falls within the date range
         for i, sess in info.iterrows():
+            info.loc[i, 'month'] = month_dict[sess.month]
             sess_date = dt.date(sess.year, month_dict[sess.month], sess.day)
             if start_date <= sess_date <= end_date:
                 mask[i] = True
@@ -98,23 +96,3 @@ def get_subj_info(ltp_path='/data/eeg/scalp/ltp/'):
             data[subj.subject] = {'educ': subj.education_years, 'birth': subj.birth_year, 'gender': subj.gender}
 
     return data
-
-
-def calculate_age_in_months(sess_data, year, month=1, day=1):
-    """
-    Given session information and a date of birth, calculate the participant's age in months at the time of the session.
-
-    :param sess_data: A dictionary or data frame containing the year, month, and day of a session.
-    :param year: An integer indicating the year the participant was born.
-    :param month: An integer or 3-letter string indicating the month the participant was born (Default=1).
-    :param day: An integer indicating the day the participant was born (Default=1).
-    :return: The age of the participant (in months) at the time of the session.
-    """
-
-    month = month_dict[month] if type(month) == str else month  # Convert string abbreviations for months into integers
-    date_of_birth = dt.date(year, month, day)
-    date_of_sess = dt.date(sess_data['year'], sess_data['month'], sess_data['day'])
-    age = date_of_sess - date_of_birth  # Calculate age at time of session
-    age = age.years * 12 + age.months + int(round(age.days / 31.))  # Convert age to months
-
-    return age
