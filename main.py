@@ -35,7 +35,7 @@ if __name__ == "__main__":
     # Load extra manually-compiled information (date of birth, head circumference, cap size) into the data frame
     info = get_extra_info(info, extra_info_path)
 
-    # Identify data filepaths for each session, and add them to the data frame
+    # Identify data file paths for each session, and add them to the data frame
     info = get_filepaths(info, ltp_path=ltp_path, protocols_path=protocols_path)
 
     # Fill out the two spreadsheets with
