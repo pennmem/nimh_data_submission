@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 
 
@@ -15,21 +14,22 @@ def fill_eeg_details(ed, info):
     ed = ed.append(pd.DataFrame(None, index=info.index))
     ed.loc[:, 'subjectkey'] = info.subjectkey  # Subject GUID
     ed.loc[:, 'src_subject_id'] = info.subject  # Subject ID
-    ed.loc[:, 'interview_date'] = np.nan  # Session date (MM/DD/YYYY)
+    ed.loc[:, 'interview_date'] = info.date  # Session date (MM/DD/YYYY)
     ed.loc[:, 'interview_age'] = info.age_in_months  # Participant's age in months
     ed.loc[:, 'gender'] = info.gender  # Participant's gender
+    ed.loc[:, 'site'] = info.location  # Session location
     ed.loc[:, 'visit'] = info.session  # Session number
     ed.loc[:, 'eeg001'] = 1  # 1 if EEG was used, 0 if no EEG
-    ed.loc[:, 'eeg003b'] = np.nan  # Handedness for throwing a ball (1-5)
-    ed.loc[:, 'eeg003d'] = np.nan  # Handedness for brushing teeth (1-5)
-    ed.loc[:, 'eeg003e'] = np.nan  # Handedness for using scissors (1-5)
-    ed.loc[:, 'eeg003g'] = np.nan  # Handedness for writing (1-5)
-    ed.loc[:, 'eeg008c'] = np.nan  # Hours of sleep
-    ed.loc[:, 'eeg008d'] = np.nan  # Alertness (1-5)
-    ed.loc[:, 'eeg013'] = np.nan  # Start time of EEG recording
+    ed.loc[:, 'eeg003b'] = info.hand_throw  # Handedness for throwing a ball (1-5)
+    ed.loc[:, 'eeg003d'] = info.hand_toothbrush # Handedness for brushing teeth (1-5)
+    ed.loc[:, 'eeg003e'] = info.hand_scissors  # Handedness for using scissors (1-5)
+    ed.loc[:, 'eeg003g'] = info.hand_write  # Handedness for writing (1-5)
+    ed.loc[:, 'eeg008c'] = info.sleep  # Hours of sleep
+    ed.loc[:, 'eeg008d'] = info.alertness  # Alertness (1-5)
+    ed.loc[:, 'eeg013'] = info.start_time  # Start time of EEG recording
     ed.loc[:, 'head_circum'] = info.head_circum  # Participant's head circumference (in cm)
     ed.loc[:, 'eeg015'] = info.cap_size  # Size of cap used (PM, PL, AS, AM, AML, AL, AXL)
-    ed.loc[:, 'eeg022'] = np.nan  # End time of EEG recording
+    ed.loc[:, 'eeg022'] = info.end_time  # End time of EEG recording
     ed.loc[:, 'eeg026'] = 0  # 1 if task included faces, 0 if not
     ed.loc[:, 'eeg027'] = 0  # 1 if task involved resting with eyes closed, 0 if not
     ed.loc[:, 'eeg028'] = 0  # 1 if a cognitive flanker task, 0 if not
@@ -44,7 +44,7 @@ def fill_eeg_sub_files(esf, info):
     esf = esf.append(pd.DataFrame(None, index=info.index))
     esf.loc[:, 'subjectkey'] = info.subjectkey  # Subject GUID
     esf.loc[:, 'src_subject_id'] = info.subject  # Subject ID
-    esf.loc[:, 'interview_date'] = np.nan  # Session date (MM/DD/YYYY)
+    esf.loc[:, 'interview_date'] = info.date  # Session date (MM/DD/YYYY)
     esf.loc[:, 'interview_age'] = info.age_in_months  # Participant's age in months
     esf.loc[:, 'gender'] = info.gender  # Participant's gender
     esf.loc[:, 'ofc'] = info.head_circum  # Participant's head circumference (in cm)
