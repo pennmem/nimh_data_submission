@@ -1,6 +1,7 @@
 import os
 import glob
 import pandas as pd
+from __future__ import print_function
 
 
 def get_filepaths(info, ltp_path='/data/eeg/scalp/ltp/', protocols_path='/protocols/ltp/'):
@@ -23,6 +24,7 @@ def get_filepaths(info, ltp_path='/data/eeg/scalp/ltp/', protocols_path='/protoc
     info['data_file3_type'] = pd.Series(None, index=info.index)
     info['data_file4'] = pd.Series(None, index=info.index)
     info['data_file4_type'] = pd.Series(None, index=info.index)
+    total_size = 0
 
     for i, sess_data in info.iterrows():
 
@@ -33,7 +35,7 @@ def get_filepaths(info, ltp_path='/data/eeg/scalp/ltp/', protocols_path='/protoc
         sess_path = os.path.join(ltp_path, '%s/%s/session_%s' % (exp, subj, sess))
         db_path = os.path.join(protocols_path, 'subjects/%s/experiments/%s/sessions/%s' % (subj, exp, sess))
 
-        # Determine the filepaths and file types for the current session
+        # Determine the file paths and file types for the current session
         if exp == 'pyFR':
             filepaths = get_filepaths_pyFR(sess_path, db_path)
         elif exp == 'ltpFR2':
@@ -48,6 +50,13 @@ def get_filepaths(info, ltp_path='/data/eeg/scalp/ltp/', protocols_path='/protoc
         # Add file information to the data frame
         info.loc[i, ('data_file1', 'data_file1_type', 'data_file2', 'data_file2_type',
                      'data_file3', 'data_file3_type', 'data_file4', 'data_file4_type')] = filepaths
+
+        for j, path in enumerate(filepaths):
+            if j in (0, 2, 4, 6) and path != '':
+                total_size += os.path.getsize(path)
+
+    total_size /= 1073741824.
+    print('Total Upload Size: %s GB' % total_size)
 
     return info
 
