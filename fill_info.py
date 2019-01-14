@@ -2,7 +2,15 @@ import pandas as pd
 
 
 def fill_info(ed, esf, info):
+    """
+    Fill aggregated session information into the appropriate columns of the eeg_details01 and eeg_sub_files01
+    spreadsheets.
 
+    :param ed: (Empty) data frame containing the columns of the eeg_details01 spreadsheet.
+    :param esf: (Empty) data frame containing the columns of the eeg_sub_files01 spreadsheet.
+    :param info: Data frame containing information about every session that will be entered into the spreadsheets.
+    :return: Two data frames containing filled-out versions of the eeg_details01 and eeg_sub_files01 spreadsheets.
+    """
     ed = fill_eeg_details(ed, info)
     esf = fill_eeg_sub_files(esf, info)
 
@@ -10,7 +18,13 @@ def fill_info(ed, esf, info):
 
 
 def fill_eeg_details(ed, info):
+    """
+    Fill out the eeg_details01 spreadsheet with all available and relevant info.
 
+    :param ed: (Empty) data frame containing the columns of the eeg_details01 spreadsheet.
+    :param info: Data frame containing information about every session that will be entered into the spreadsheets.
+    :return: Data frame filled out with the eeg_details01 information.
+    """
     ed = ed.append(pd.DataFrame(None, index=info.index))
     ed.loc[:, 'subjectkey'] = info.subjectkey  # Subject GUID
     ed.loc[:, 'src_subject_id'] = info.subject  # Subject ID
@@ -40,7 +54,13 @@ def fill_eeg_details(ed, info):
 
 
 def fill_eeg_sub_files(esf, info):
+    """
+    Fill out the eeg_sub_files01 spreadsheet with all available and relevant info.
 
+    :param esf: (Empty) data frame containing the columns of the eeg_sub_files01 spreadsheet.
+    :param info: Data frame containing information about every session that will be entered into the spreadsheets.
+    :return: Data frame filled out with the eeg_sub_file01 information.
+    """
     esf = esf.append(pd.DataFrame(None, index=info.index))
     esf.loc[:, 'subjectkey'] = info.subjectkey  # Subject GUID
     esf.loc[:, 'src_subject_id'] = info.subject  # Subject ID
