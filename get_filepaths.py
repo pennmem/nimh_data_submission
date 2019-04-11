@@ -1,7 +1,7 @@
+from __future__ import print_function
 import os
 import glob
 import pandas as pd
-from __future__ import print_function
 
 
 def get_filepaths(info, ltp_path='/data/eeg/scalp/ltp/', protocols_path='/protocols/ltp/'):
