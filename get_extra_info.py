@@ -1,5 +1,6 @@
 import pandas as pd
 import datetime as dt
+from dateutil.relativedelta import relativedelta
 
 
 def get_extra_info(info, extra_info_path):
@@ -49,7 +50,7 @@ def calculate_age_in_months(sess_data, year, month=1, day=1):
     """
     date_of_birth = dt.date(year, month, day)
     date_of_sess = dt.date(sess_data['year'], sess_data['month'], sess_data['day'])
-    age = date_of_sess - date_of_birth  # Calculate age at time of session
-    age = int(round(age.days / 31.))  # Convert age to months
+    age = relativedelta(date_of_sess, date_of_birth)
+    age = age.years * 12 + age.months + int(round(age.days/31.))  # Convert age to months
 
     return age
