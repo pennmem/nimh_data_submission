@@ -27,7 +27,8 @@ EXP_DICT = dict(
     ltpFR2=599,
     SFR=748,
     FR1_scalp=748,
-    VFFR=1183
+    VFFR=1183,
+    ltpDelayRepFRReadOnly=2321
 )
 
 # List of subject info fields to load from ltp/<exp>/cmldb_subj_info_<exp>.csv (names must match column headers)

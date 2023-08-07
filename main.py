@@ -12,11 +12,11 @@ from write_info import write_info
 #####
 ltp_path = os.path.expanduser('~/rhino_mount/data/eeg/scalp/ltp/')  # Path to ltp data directory on Rhino
 protocols_path = os.path.expanduser('~/rhino_mount/protocols/ltp/')  # Path to ltp protocols directory on Rhino
-eeg_details_path = os.path.expanduser('~/Desktop/NIMH_Share_Jan19/eeg_details01.csv')  # Path to eeg_details file
-eeg_sub_files_path = os.path.expanduser('~/Desktop/NIMH_Share_Jan19/eeg_sub_files01.csv')  # Path to eeg_sub_files file
-extra_info_path = os.path.expanduser('~/Desktop/NIMH_Share_Jan19/extra_data.txt')  # Path to manually-compiled info
-date_range_start = dt.date(year=2018, month=6, day=2)  # Earliest session date to include (inclusive)
-date_range_end = dt.date(year=2019, month=1, day=15)  # Latest session date to include (inclusive)
+eeg_details_path = os.path.expanduser('~/Desktop/NIMH_Share_Aug23/eeg_details01.csv')  # Path to eeg_details file
+eeg_sub_files_path = os.path.expanduser('~/Desktop/NIMH_Share_Aug23/eeg_sub_files01.csv')  # Path to eeg_sub_files file
+extra_info_path = os.path.expanduser('~/Desktop/NIMH_Share_Aug23/extra_data.txt')  # Path to manually-compiled info
+date_range_start = dt.date(year=2023, month=3, day=1)  # Earliest session date to include (inclusive)
+date_range_end = dt.date(year=2023, month=8, day=1)  # Latest session date to include (inclusive)
 
 #####
 # PIPELINE

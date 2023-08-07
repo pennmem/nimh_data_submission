@@ -44,6 +44,8 @@ def get_filepaths(info, ltp_path='/data/eeg/scalp/ltp/', protocols_path='/protoc
             filepaths = get_filepaths_SFR(sess_path, ltp_path, exp, subj)
         elif exp == 'VFFR':
             filepaths = get_filepaths_VFFR(sess_path, db_path)
+        elif exp == 'ltpDelayRepFRReadOnly':
+            filepaths = get_filepaths_VFFR(sess_path, db_path)
         else:
             filepaths = ['' for _ in range(8)]
 
@@ -141,6 +143,32 @@ def get_filepaths_SFR(sess_path, ltp_path, exp, subj):
 
 
 def get_filepaths_VFFR(sess_path, db_path):
+    """
+    Finds file paths for the EEG file(s) and JSON events file for a VFFR session. If events are not available, uses the
+    session log instead.
+
+    :param sess_path: The path to the LTP directory for a specific VFFR session.
+    :param db_path: The path to the protocols directory for a specific VFFR session.
+    :return: An 8-item list containing up to four file paths and their file types, to be filled into the spreadsheet.
+    """
+    eeg_files = glob.glob(os.path.join(db_path, 'ephys', 'current_processed', '*.bdf'))
+    eeg_files = [''] if len(eeg_files) == 0 else eeg_files
+    events_file = os.path.join(db_path, 'behavioral', 'current_processed', 'task_events.json')
+    session_log = os.path.join(sess_path, 'session.jsonl')
+
+    filepaths = ['' for _ in range(8)]
+    filepaths[0] = eeg_files[0]
+    filepaths[1] = 'EEG' if filepaths[0] != '' else ''
+    filepaths[2] = events_file if os.path.exists(events_file) else session_log
+    filepaths[3] = 'Behavioral' if os.path.exists(events_file) else 'Session Log'
+    filepaths[4] = eeg_files[1] if len(eeg_files) > 1 else ''
+    filepaths[5] = 'EEG' if filepaths[4] != '' else ''
+    filepaths[6] = eeg_files[2] if len(eeg_files) > 2 else ''
+    filepaths[7] = 'EEG' if filepaths[6] != '' else ''
+
+    return filepaths
+
+def get_filepaths_DelayRepFR(sess_path, db_path):
     """
     Finds file paths for the EEG file(s) and JSON events file for a VFFR session. If events are not available, uses the
     session log instead.
